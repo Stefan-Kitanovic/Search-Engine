@@ -36,9 +36,9 @@ class Trie:
 def trieHTML(path, parser):
     tree = Trie()
     for root, dirs, files in os.walk(path):
-        for file in files:           # iteracija ide kroz fajlove putanje
-            currPath = os.path.join(path, file)
-            if os.path.isfile(currPath) and file.endswith('.html'):
+        for file in files:                              # iteracija ide kroz fajlove putanje
+            currPath = os.path.join(root, file)         # Postavljamo trenutnu putanju
+            if os.path.isfile(currPath) and file.endswith('.html'):  # Ako se fajl zavrsava sa .html parsiraj
                 p = parser.parse(currPath)
                 for word in p[1]:
                     if not tree.search(word):
