@@ -1,8 +1,9 @@
 import os
+import time
 
 from Trie import Trie, trieHTML
 from htmlParser import Parser
-import time
+import QueryHandler
 
 
 def main():
@@ -31,13 +32,30 @@ def main():
             print('Vreme izgradnje trie stabla: ' + str(t2 - t1))
 
         elif opt == "2":
-            pass
+            param = -1
+            while param not in range(3):
+                print("Izabrati format pretrage:")
+                print("1 - Standardna pretraga: [rec1 rec2 rec3 ...]")
+                print("2 - Logicka pretraga:    [rec1 OP rec2]  *OP = {AND, OR, NOT}")
+                print("0 - napusti opciju")
+                param = int(input(">> "))
+                if param == 0:
+                    continue
+                elif param == 1:
+                    query = input("Pretrazi: ")
+                    splited = QueryHandler.standardQuery(query)
+                elif param == 2:
+                    query = input("Pretrazi: ")
+                    splited = QueryHandler.logicQuery(query)
+
         elif opt == "3":
             pass
         elif opt == "4":
             pass
         elif opt == "0":
             return
+        else:
+            print("Greska pri unosu!\n")
 
 
 def inputDirectory():
