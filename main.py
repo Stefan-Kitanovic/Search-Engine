@@ -3,12 +3,12 @@ import time
 
 from Trie import Trie, trieHTML
 from htmlParser import Parser
-import QueryHandler
+import queryHandler
 
 
 def main():
     parser = Parser()
-    parsiraniFajlovi = list()
+    parsedFiles = list()
     trieTree = None
     opt = -1
     while opt:
@@ -23,7 +23,10 @@ def main():
         if opt == "1":
             path = inputDirectory()
             if not os.path.exists(path):
-                print("\nUneti direktorijum ne postoji!\n")
+                print("Uneti direktorijum ne postoji!\n")
+                continue
+            if not os.path.isdir(path):
+                print("Uneta putanja nije direktorijum!\n")
                 continue
 
             t1 = time.time()
@@ -43,10 +46,10 @@ def main():
                     continue
                 elif param == 1:
                     query = input("Pretrazi: ")
-                    splited = QueryHandler.standardQuery(query)
+                    splited = queryHandler.standardQuery(query)
                 elif param == 2:
                     query = input("Pretrazi: ")
-                    splited = QueryHandler.logicQuery(query)
+                    splited = queryHandler.logicQuery(query)
 
         elif opt == "3":
             pass
