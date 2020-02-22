@@ -8,7 +8,9 @@ import queryHandler
 
 def main():
     parser = Parser()
+    parsed = False
     parsedFiles = list()
+    searchResult = list()       # sadrzi listu recnika: link - br ponavljanja, za svaku zasebnu rec
     trieTree = None
     opt = -1
     while opt:
@@ -30,28 +32,42 @@ def main():
                 continue
 
             t1 = time.time()
+            print("Izgradnja trie stabla . . .")
             trieTree = trieHTML(path, parser)
             t2 = time.time()
+            print("Izgradnja trie stabla uspesna.")
             print('Vreme izgradnje trie stabla: ' + str(t2 - t1))
+            parsed = True
+            del t1, t2, path
 
         elif opt == "2":
+            if not parsed:
+                print("Prvo izvrsiti parsiranje!\n")
+                continue
             param = -1
-            while param not in range(3):
+            while param:
                 print("Izabrati format pretrage:")
                 print("1 - Standardna pretraga: [rec1 rec2 rec3 ...]")
                 print("2 - Logicka pretraga:    [rec1 OP rec2]  *OP = {AND, OR, NOT}")
-                print("0 - napusti opciju")
-                param = int(input(">> "))
-                if param == 0:
+                print("0 - Napusti opciju")
+                param = input(">> ")
+                if param == '0':
                     continue
-                elif param == 1:
+                elif param == '1':
                     query = input("Pretrazi: ")
                     splited = queryHandler.standardQuery(query)
-                elif param == 2:
+                    searchResult = queryHandler.standardSearch(splited, trieTree)
+                    break
+                elif param == '2':
                     query = input("Pretrazi: ")
                     splited = queryHandler.logicQuery(query)
+                    break
 
         elif opt == "3":
+            for i in searchResult:           # Samo za test prikaz
+                for j in i.keys():
+                    print(j, " : ", i[j])
+                print("")
             pass
         elif opt == "4":
             pass

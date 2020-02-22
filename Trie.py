@@ -22,16 +22,17 @@ class Trie:
             curr = curr.children[letter]
         curr.isWord = True
 
-    def search(self, word: str):
-        wordL = word.lower()
-        curr = self.root
+    def search(self, word: str):        # Vraca informaciju da li rec postoji:
+        wordL = word.lower()            # ako postoji Vraca: (True, dokumente u kojima je sadrzana i br ponavljanja)
+        curr = self.root                # ako ne postoji Vraca: False, {nema rezultata : 0}
         for letter in wordL:
             if letter not in curr.children.keys():
-                return False
-            if letter == word[-1]:
-                break
+                return False, {'Nema rezultata': 0}
             curr = curr.children[letter]
-        return curr.isWord
+        if curr.isWord:                 # Treba ukoliko algoritam pronadje sve grane, ali krajnji node nije rec
+            return True, curr.documents
+        else:
+            return False, {'Nema rezultata': 0}
 
     def addDocInfo(self, path, word):           # Ubacuje informaciju u documents polje
         wordL = word.lower()                    # Postoji i zastita od unosa u nepostojecu rec
@@ -55,7 +56,7 @@ def trieHTML(path, parser):
             if os.path.isfile(currPath) and file.endswith('.html'):  # Ako se fajl zavrsava sa .html parsiraj
                 p = parser.parse(currPath)
                 for word in p[1]:
-                    if not tree.search(word):           # Potrebna optimizacija
+                    if not tree.search(word)[0]:           # Potrebna optimizacija
                         tree.insert(word)
                     tree.addDocInfo(currPath, word)
     return tree

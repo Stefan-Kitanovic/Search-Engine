@@ -1,8 +1,11 @@
+from Trie import Trie
+
 
 def standardQuery(query: str):
     return query.split(' ')
 
 logOP = ["AND", "OR", "NOT"]
+
 
 def logicQuery(query: str):
     res = query.split(' ')
@@ -16,3 +19,13 @@ def logicQuery(query: str):
     else:
         res[1] = res[1].upper()
         return res
+
+
+def standardSearch(words: str, tree: Trie):
+    fullResult = list()     # lista recnika svake reci
+    links = dict()          # recnik documents pojedinacne reci
+    for word in words:
+        links = tree.search(word)[1]
+        fullResult.append(links)
+    return fullResult
+
