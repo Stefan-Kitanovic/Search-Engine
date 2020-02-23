@@ -4,7 +4,8 @@ import time
 from Trie import Trie, trieHTML
 from htmlParser import Parser
 import queryHandler
-
+from graph import Graph
+from fileParser import parseFiles
 
 def main():
     parser = Parser()
@@ -12,6 +13,9 @@ def main():
     parsedFiles = list()
     searchResult = list()       # sadrzi listu recnika: link - br ponavljanja, za svaku zasebnu rec
     trieTree = None
+    graph = Graph()
+    edges = []
+    words = []
     opt = -1
     while opt:
         print("Izabrati opciju: ")
@@ -33,7 +37,12 @@ def main():
 
             t1 = time.time()
             print("Izgradnja trie stabla . . .")
+            edges, words = parseFiles(path, parser)
             trieTree = trieHTML(path, parser)
+
+            for edge in edges:
+                graph.add_edge(edge)
+
             t2 = time.time()
             print("Izgradnja trie stabla uspesna.")
             print('Vreme izgradnje trie stabla: ' + str(t2 - t1))

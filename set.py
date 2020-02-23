@@ -1,4 +1,4 @@
-class Set():
+class Set:
     def __init__(self, elems=None):
         if elems == None:
             elems = []
