@@ -6,12 +6,13 @@ from htmlParser import Parser
 import queryHandler
 from graph import Graph
 from fileParser import parseFiles
+from set import Set
 
 def main():
     parser = Parser()
     parsed = False
-    parsedFiles = list()
-    searchResult = list()       # sadrzi listu recnika: link - br ponavljanja, za svaku zasebnu rec
+    searchInfo = list()       # lista recnika: {link : br ponavljanja} za svaku zasebnu pretrazenu rec (zbog rangiranja)
+    searchResult = Set()      # lista konacnih rezultata pretrage
     trieTree = None
     graph = Graph()
     edges = []
@@ -73,20 +74,26 @@ def main():
                     continue
                 elif param == '1':
                     query = input("Pretrazi: ")
-                    splited = queryHandler.standardQuery(query)
-                    searchResult = queryHandler.standardSearch(splited, trieTree)
+                    splitted = queryHandler.standardQuery(query)
+                    if len(splitted) != 0:
+                        searchInfo, searchResult = queryHandler.standardSearch(splitted, trieTree)
                     break
                 elif param == '2':
                     query = input("Pretrazi: ")
-                    splited = queryHandler.logicQuery(query)
+                    splitted = queryHandler.logicQuery(query)
+                    if len(splitted) != 0:
+                        searchInfo, searchResult = queryHandler.logicsSearch(splitted, trieTree)
                     break
 
-        elif opt == "3":
-            for i in searchResult:           # Samo za test prikaz
+        elif opt == "3":                        # Trenutno samo za test prikaz
+            print("Pojedinacni rezultati:")
+            for i in searchInfo:
                 for j in i.keys():
                     print(j, " : ", i[j])
                 print("")
-            pass
+            print("Konacni rezultati:")
+            for i in searchResult.elems:
+                print(i)
         elif opt == "4":
             pass
         elif opt == "0":

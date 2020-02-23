@@ -1,8 +1,9 @@
 from Trie import Trie
-
+from set import Set, intersection, union, difference
 
 def standardQuery(query: str):
     return query.split(' ')
+
 
 logOP = ["AND", "OR", "NOT"]
 
@@ -21,11 +22,37 @@ def logicQuery(query: str):
         return res
 
 
-def standardSearch(words: str, tree: Trie):
-    fullResult = list()     # lista recnika svake reci
-    links = dict()          # recnik documents pojedinacne reci
+def standardSearch(words, tree: Trie):
+    searchInfo = list()     # lista recnika svake reci
+    searchResult = Set()
+    sets = list()
+    n = 0
+
     for word in words:
-        links = tree.search(word)[1]
-        fullResult.append(links)
-    return fullResult
+        searchInfo.append(tree.search(word)[1])
+        sets.append(tree.search(word)[1].keys())
+
+    currSet = sets[-1]
+    for i in range(n - 1, -1, -1):
+        searchResult = union(currSet, sets[n])
+
+    return searchInfo, searchResult
+
+def logicsSearch(words, tree: Trie):
+    searchInfo = list()     # lista recnika svake reci
+    searchResult = Set()    # set rezultata pretrage
+
+    searchInfo.append(tree.search(words[0])[1])     # pretraga prve reci
+    searchInfo.append(tree.search(words[2])[1])     # pretraga druge reci
+
+    set1 = Set(searchInfo[0].keys())
+    set2 = Set(searchInfo[1].keys())
+    if words[1] == 'AND':
+        searchResult = intersection(set1, set2)
+    elif words[1] == 'OR':
+        searchResult = union(set1, set2)
+    elif words[1] == 'NOT':
+        searchResult = difference(set1, set2)
+
+    return searchInfo, searchResult
 
