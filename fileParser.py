@@ -3,7 +3,7 @@ import os
 
 def parseFiles(path, parser):
     edges = []
-    words = []
+    words = {}  # {link: reci_na_linku}
 
     for root, dirs, files in os.walk(path):
         for file in files:  # iteracija ide kroz fajlove putanje
@@ -14,6 +14,5 @@ def parseFiles(path, parser):
                 for link in p[0]:
                     edges.append([currPath, link])
 
-                for word in p[1]:
-                    words.append(word)
+                words[currPath] = p[1]
     return edges, words

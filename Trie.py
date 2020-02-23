@@ -48,15 +48,12 @@ class Trie:
                 curr.documents[path] = 1
 
 
-def trieHTML(path, parser):
+def trieHTML(words):
     tree = Trie()
-    for root, dirs, files in os.walk(path):
-        for file in files:                              # iteracija ide kroz fajlove putanje
-            currPath = os.path.join(root, file)         # Postavljamo trenutnu putanju
-            if os.path.isfile(currPath) and file.endswith('.html'):  # Ako se fajl zavrsava sa .html parsiraj
-                p = parser.parse(currPath)
-                for word in p[1]:
-                    if not tree.search(word)[0]:           # Potrebna optimizacija
-                        tree.insert(word)
-                    tree.addDocInfo(currPath, word)
+    for link in words.keys():                  # iteracija kroz linkove
+        for word in words[link]:               # iteracija kroz reci pojedinacnog linka
+            if not tree.search(word)[0]:       # Optimizacija ?
+                tree.insert(word)
+            tree.addDocInfo(link, word)
+
     return tree

@@ -15,10 +15,10 @@ def main():
     trieTree = None
     graph = Graph()
     edges = []
-    words = []
+    words = {}
     opt = -1
     while opt:
-        print("Izabrati opciju: ")
+        print("\nIzabrati opciju: ")
         print("1 - Parsiranje datoteka")
         print("2 - Pretraga")
         print("3 - Prikaz rezultata")
@@ -35,19 +35,28 @@ def main():
                 print("Uneta putanja nije direktorijum!\n")
                 continue
 
+            parsed = False          # Zastita ukoliko dodje do greske tokom parsiranja
             t1 = time.time()
-            print("Izgradnja trie stabla . . .")
+            print("Parsiranje . . .")
             edges, words = parseFiles(path, parser)
-            trieTree = trieHTML(path, parser)
-
+            print("Parsiranje uspeno.")
+            t2 = time.time()
+            print("Izgradnja grafa . . .")
             for edge in edges:
                 graph.add_edge(edge)
 
-            t2 = time.time()
+            print("Izgradnja grafa uspesna.")
+            t3 = time.time()
+            print("Izgradnja trie stabla . . .")
+            trieTree = Trie()
+            trieTree = trieHTML(words)
+            t4 = time.time()
             print("Izgradnja trie stabla uspesna.")
-            print('Vreme izgradnje trie stabla: ' + str(t2 - t1))
+            print('--> Vreme parsiranja: ' + str(t2 - t1))
+            print('--> Vreme izgradnje grafa: ' + str(t3 - t2))
+            print('--> Vreme izgradnje trie stabla: ' + str(t4 - t3))
             parsed = True
-            del t1, t2, path
+            del t1, t2, t3, t4, edge      # Oslobadjamo memoriju od bespotrebnih promenljivih
 
         elif opt == "2":
             if not parsed:
