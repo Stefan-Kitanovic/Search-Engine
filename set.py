@@ -1,5 +1,8 @@
 class Set():
-    def __init__(self, elems = []):
+    def __init__(self, elems=None):
+        if elems == None:
+            elems = []
+
         self.elems = elems
 
     def append(self, elem):
@@ -10,7 +13,7 @@ class Set():
 
 
 def union(set1, set2):
-    union_set = Set([])
+    union_set = Set()
 
     for elem in set1.elems:
         union_set.append(elem)
@@ -23,7 +26,7 @@ def union(set1, set2):
 
 
 def intersection(set1, set2):
-    intersection_set = Set([])
+    intersection_set = Set()
 
     for elem in set1.elems:
         if elem in set2.elems:
@@ -37,7 +40,7 @@ def intersection(set1, set2):
 
 
 def difference(set1, set2):
-    difference_set = Set([])
+    difference_set = Set()
 
     for elem in set1.elems:
         if elem not in set2.elems:
