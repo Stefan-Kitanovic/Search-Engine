@@ -71,7 +71,7 @@ def main():
                 print("0 - Napusti opciju")
                 param = input(">> ")
                 if param == '0':
-                    continue
+                    break
                 elif param == '1':
                     query = input("Pretrazi: ")
                     splitted = queryHandler.standardQuery(query)
@@ -81,9 +81,11 @@ def main():
                 elif param == '2':
                     query = input("Pretrazi: ")
                     splitted = queryHandler.logicQuery(query)
-                    if len(splitted) != 0:
+                    if splitted is not None:
                         searchInfo, searchResult = queryHandler.logicsSearch(splitted, trieTree)
+                    splitted.pop(1)
                     break
+            del query
 
         elif opt == "3":                        # Trenutno samo za test prikaz
             print("Pojedinacni rezultati:")
@@ -94,6 +96,7 @@ def main():
             print("Konacni rezultati:")
             for i in searchResult.elems:
                 print(i)
+            del i, j
         elif opt == "4":
             pass
         elif opt == "0":
