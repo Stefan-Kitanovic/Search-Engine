@@ -26,15 +26,15 @@ def standardSearch(words, tree: Trie):
     searchInfo = list()     # lista recnika svake reci
     searchResult = Set()
     sets = list()
-    n = 0
 
     for word in words:
         searchInfo.append(tree.search(word)[1])
-        sets.append(tree.search(word)[1].keys())
+        sets.append(Set(tree.search(word)[1].keys()))
 
-    currSet = sets[-1]
-    for i in range(n - 1, -1, -1):
-        searchResult = union(currSet, sets[n])
+    currSet = sets[0]
+    for i in range(1, len(words)):
+        searchResult = union(currSet, sets[i])
+        currSet = sets[i]
 
     return searchInfo, searchResult
 
