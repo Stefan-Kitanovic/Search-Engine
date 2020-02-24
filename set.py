@@ -6,7 +6,8 @@ class Set:
         self.elems = elems
 
     def append(self, elem):
-        self.elems.append(elem)
+        if elem not in self.elems:
+            self.elems.append(elem)
 
     def update(self, elems):
         self.elems = elems
