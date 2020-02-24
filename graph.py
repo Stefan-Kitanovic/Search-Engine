@@ -11,10 +11,9 @@ class Graph:
     def edges(self):
         edges = []
 
-        for vertex in self.graph:
-            for neighbour in self.graph[vertex]:
-                if {neighbour, vertex} not in edges:
-                    edges.append({vertex, neighbour})
+        for values in self.graph.values():
+            for link in values:
+                edges.append(link)
 
         return edges
 
