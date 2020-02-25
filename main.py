@@ -68,9 +68,9 @@ def main():
             param = -1
             while param:
                 print("Izabrati format pretrage:")
-                print("1 - Standardna pretraga: [rec1 rec2 rec3 ...]")
-                print("2 - Logicka pretraga:    [rec1 OP rec2]  *OP = {AND, OR, NOT}")
-                print("0 - Napusti opciju")
+                print("2.1 - Standardna pretraga: [rec1 rec2 rec3 ...]")
+                print("2.2 - Logicka pretraga:    [rec1 OP rec2]  *OP = {AND, OR, NOT}")
+                print("2.0 - Napusti opciju")
                 param = input(">> ")
                 if param == '0':
                     break
