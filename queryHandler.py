@@ -39,7 +39,7 @@ def standardSearch(words, tree: Trie):
     if len(words) == 1:
         searchResult = currSet
     for i in range(1, len(words)):
-        searchResult = union(currSet, sets[i])          # primena OR operatora nad svim recima
+        searchResult = union(currSet, sets[i])          # primena OR operatora nad setovima svih reci (unija)
         currSet = sets[i]
 
     return searchInfo, searchResult
@@ -48,31 +48,19 @@ def standardSearch(words, tree: Trie):
 def logicsSearch(words, tree: Trie):
     searchInfo = list()     # lista recnika dokumenata svake reci (u skupu rezultata)
     searchResult = Set()    # set rezultata pretrage (linkova)
-    temp = list()           # nefiltrirani searchInfo
 
-    temp.append(tree.search(words[0])[1])      # pretraga prve reci
-    temp.append(tree.search(words[2])[1])      # pretraga druge reci
+    searchInfo.append(tree.search(words[0])[1])      # pretraga prve reci
+    searchInfo.append(tree.search(words[2])[1])      # pretraga druge reci
 
-    set1 = Set(temp[0].keys())
-    set2 = Set(temp[1].keys())
+    set1 = Set(searchInfo[0].keys())
+    set2 = Set(searchInfo[1].keys())
     if words[1] == 'AND':
         searchResult = intersection(set1, set2)
-        for word in temp:                      # Filtriranje temp rezultatima pretrage
-            dictt = dict()
-            for link in searchResult.elems:
-                if link in word.keys():
-                    dictt[link] = word[link]
-            searchInfo.append(dictt)
     elif words[1] == 'OR':
         searchResult = union(set1, set2)
-        searchInfo = temp                      # Nije potrebno filtriranje
     elif words[1] == 'NOT':
         searchResult = difference(set1, set2)
-        dictt = dict()
-        for link in searchResult.elems:        # Filtriranje temp rezultatima pretrage
-            if link in temp[0].keys():
-                dictt[link] = temp[0][link]
-        searchInfo.append(dictt)
+        searchInfo.pop()
 
     return searchInfo, searchResult
 
