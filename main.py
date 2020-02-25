@@ -7,14 +7,16 @@ import queryHandler
 from graph import Graph
 from fileParser import parseFiles
 from set import Set
+from ranking import pageRank
+from paginator import pagination
 
 def main():
     parser = Parser()
     parsed = False
+    searched = False
     searchInfo = list()       # lista recnika {link: br ponavljanja na linku} za svaku pretrazenu rec
     searchResult = Set()      # lista konacnih rezultata pretrage (linkova)
     trieTree = None
-    graph = Graph()
     edges = []
     words = {}
     opt = -1
@@ -23,7 +25,6 @@ def main():
         print("1 - Parsiranje datoteka")
         print("2 - Pretraga")
         print("3 - Prikaz rezultata")
-        print("4 - Paginacija")
         print("0 - Izlaz\n")
         opt = input('>> ')
 
@@ -43,6 +44,7 @@ def main():
             print("Parsiranje uspeno.")
             t2 = time.time()
             print("Izgradnja grafa . . .")
+            graph = Graph()
             for edge in edges:
                 graph.add_edge(edge)
 
@@ -77,6 +79,7 @@ def main():
                     splitted = queryHandler.standardQuery(query)
                     if len(splitted) != 0:
                         searchInfo, searchResult = queryHandler.standardSearch(splitted, trieTree)
+                    searched = True
                     del query
                     break
                 elif param == '2':
@@ -87,21 +90,24 @@ def main():
                         if splitted[1] == 'NOT':
                             splitted.pop()
                         splitted.pop(1)
+                    searched = True
                     del query
                     break
 
-        elif opt == "3":                        # Trenutno samo za test prikaz
+        elif opt == "3":
+            if not searched:
+                print("Prvo izvrsiti pretragu!\n")
+                continue
 
-            print("Pojedinacni rezultati:")
-            for i in searchInfo:
-                for j in i.keys():
-                    print(j, " : ", i[j])
-                print("")
-            print("Konacni rezultati:")
-            for i in searchResult.elems:
-                print(i)
-        elif opt == "4":
-            pass
+            rankedResults, sortedList = pageRank(graph, searchResult, searchInfo)
+
+            pagesToDisplay = []
+
+            for page in sortedList:
+                pagesToDisplay.append(os.path.relpath(page, path) + "   " + str(rankedResults[page]))
+
+            pagination(pagesToDisplay)
+
         elif opt == "0":
             return
         else:
