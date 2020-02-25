@@ -11,7 +11,7 @@ from set import Set
 def main():
     parser = Parser()
     parsed = False
-    searchInfo = list()       # lista recnika: {link : br ponavljanja} za svaku zasebnu pretrazenu rec (zbog rangiranja)
+    searchInfo = list()       # {putanja: [rec1, rec2, ..]} *lista broja ponavljanja
     searchResult = Set()      # lista konacnih rezultata pretrage
     trieTree = None
     graph = Graph()
@@ -78,16 +78,18 @@ def main():
                     if len(splitted) != 0:
                         searchInfo, searchResult = queryHandler.standardSearch(splitted, trieTree)
                     break
+                    del query
                 elif param == '2':
                     query = input("Pretrazi: ")
                     splitted = queryHandler.logicQuery(query)
                     if splitted is not None:
                         searchInfo, searchResult = queryHandler.logicsSearch(splitted, trieTree)
-                    splitted.pop(1)
+                        splitted.pop(1)
+                    del query
                     break
-            del query
 
         elif opt == "3":                        # Trenutno samo za test prikaz
+
             print("Pojedinacni rezultati:")
             for i in searchInfo:
                 for j in i.keys():
@@ -96,13 +98,12 @@ def main():
             print("Konacni rezultati:")
             for i in searchResult.elems:
                 print(i)
-            del i, j
         elif opt == "4":
             pass
         elif opt == "0":
             return
         else:
-            print("Greska pri unosu!\n")
+            print("Nepostojeca opcija!\n")
 
 
 def inputDirectory():
