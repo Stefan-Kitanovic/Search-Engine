@@ -11,8 +11,8 @@ from set import Set
 def main():
     parser = Parser()
     parsed = False
-    searchInfo = list()       # {putanja: [rec1, rec2, ..]} *lista broja ponavljanja
-    searchResult = Set()      # lista konacnih rezultata pretrage
+    searchInfo = list()       # lista recnika {link: br ponavljanja na linku} za svaku pretrazenu rec
+    searchResult = Set()      # lista konacnih rezultata pretrage (linkova)
     trieTree = None
     graph = Graph()
     edges = []
@@ -57,7 +57,7 @@ def main():
             print('--> Vreme izgradnje grafa: ' + str(t3 - t2))
             print('--> Vreme izgradnje trie stabla: ' + str(t4 - t3))
             parsed = True
-            del t1, t2, t3, t4, edge      # Oslobadjamo memoriju od bespotrebnih promenljivih
+            del t1, t2, t3, t4, edge, edges, words      # Oslobadjamo memoriju od bespotrebnih promenljivih
 
         elif opt == "2":
             if not parsed:
@@ -77,13 +77,15 @@ def main():
                     splitted = queryHandler.standardQuery(query)
                     if len(splitted) != 0:
                         searchInfo, searchResult = queryHandler.standardSearch(splitted, trieTree)
-                    break
                     del query
+                    break
                 elif param == '2':
                     query = input("Pretrazi: ")
                     splitted = queryHandler.logicQuery(query)
                     if splitted is not None:
                         searchInfo, searchResult = queryHandler.logicsSearch(splitted, trieTree)
+                        if splitted[1] == 'NOT':
+                            splitted.pop()
                         splitted.pop(1)
                     del query
                     break
