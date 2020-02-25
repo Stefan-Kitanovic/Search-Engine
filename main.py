@@ -99,12 +99,16 @@ def main():
                 print("Prvo izvrsiti pretragu!\n")
                 continue
 
+            if 'Nema rezultata' in searchInfo[0].keys():
+                print("Nema rezultata.")
+                continue
+
             rankedResults, sortedList = pageRank(graph, searchResult, searchInfo)
 
             pagesToDisplay = []
 
             for page in sortedList:
-                pagesToDisplay.append(os.path.relpath(page, path) + "   " + str(rankedResults[page]))
+                pagesToDisplay.append(os.path.relpath(page, path) + "      Rang: " + str(rankedResults[page]))
 
             pagination(pagesToDisplay)
 

@@ -26,22 +26,23 @@ def pageRank(graph, pagesToRank, wordCountDict):
 
         avg_change = sum(changes) / len(changes) #Average change of ranking per iteration
 
-    print(str(sum(rankedPages.values())))
-
     rankedResults = {}
     for page in pagesToRank.elems:
-        rankedResults[page] = rankedPages[page]
+        rankedResults[page] = 0
 
     for page in rankedResults.keys():
         for elem in wordCountDict:
-            rankedResults[page] *= elem.get(page, 0.5)
+            rankedResults[page] += elem.get(page, 0.5)
 
-    # for page in rankedPages.keys():
-    #     for key in graph.vertices():
-    #         for link in graph.graph[key]:
-    #             if page == link:
-    #                 for elem in wordCountDict:
-    #                     rankedResults[page] *= elem.get(page, 0.5) * 0.3
+    for page in rankedResults.keys():
+        for key in graph.vertices():
+            for link in graph.graph[key]:
+                if page == link:
+                    for elem in wordCountDict:
+                        rankedResults[page] += elem.get(key, 0.5) * rankedPages[key]
+
+    for page in rankedResults.keys():
+        rankedResults[page] += rankedPages[page]
 
     sortedList = list(rankedResults.keys())
 

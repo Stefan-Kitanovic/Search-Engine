@@ -1,5 +1,9 @@
 def pagination(filesToDisplay, N=8):
     currentPage = 1
+
+    if len(filesToDisplay) < N:
+        N = len(filesToDisplay)
+
     pageCount = round(len(filesToDisplay)/N)
 
     while True:
