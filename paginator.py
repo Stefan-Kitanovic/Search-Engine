@@ -1,4 +1,4 @@
-def pagination(filesToDisplay, N=8):
+def pagination(filesToDisplay, N=8):        # Postoji problem ako se poveca N na poslednjoj stranici - baca gresku
     currentPage = 1
 
     if len(filesToDisplay) < N:

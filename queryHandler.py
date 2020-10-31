@@ -1,5 +1,5 @@
 from Trie import Trie
-from set import Set, intersection, union, difference
+from Set import Set
 
 
 def standardQuery(query: str):
@@ -33,14 +33,14 @@ def standardSearch(words, tree: Trie):
 
     for word in words:                                  # iteracija kroz reci pretrage
         searchInfo.append(tree.search(word)[1])
-        sets.append(Set(tree.search(word)[1].keys()))   # Popunjavnje liste setova
+        sets.append(Set(list(tree.search(word)[1].keys())))   # Popunjavnje liste setova
 
     currSet = sets[0]
     if len(words) == 1:
         searchResult = currSet
     for i in range(1, len(words)):
-        searchResult = union(currSet, sets[i])          # primena OR operatora nad setovima svih reci (unija)
-        currSet = sets[i]
+        searchResult = currSet.union(sets[i])          # primena OR operatora nad setovima svih reci (unija)
+        currSet = searchResult
 
     return searchInfo, searchResult
 
@@ -52,14 +52,14 @@ def logicsSearch(words, tree: Trie):
     searchInfo.append(tree.search(words[0])[1])      # pretraga prve reci
     searchInfo.append(tree.search(words[2])[1])      # pretraga druge reci
 
-    set1 = Set(searchInfo[0].keys())
-    set2 = Set(searchInfo[1].keys())
+    set1 = Set(list(searchInfo[0].keys()))
+    set2 = Set(list(searchInfo[1].keys()))
     if words[1] == 'AND':
-        searchResult = intersection(set1, set2)
+        searchResult = set1.intersection(set2)
     elif words[1] == 'OR':
-        searchResult = union(set1, set2)
+        searchResult = set1.union(set2)
     elif words[1] == 'NOT':
-        searchResult = difference(set1, set2)
+        searchResult = set1.difference(set2)
         searchInfo.pop()
 
     return searchInfo, searchResult

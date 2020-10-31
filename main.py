@@ -6,7 +6,7 @@ from htmlParser import Parser
 import queryHandler
 from graph import Graph
 from fileParser import parseFiles
-from set import Set
+from Set import Set
 from ranking import pageRank
 from paginator import pagination
 
@@ -17,6 +17,7 @@ def main():
     searchInfo = list()       # lista recnika {link: br ponavljanja na linku} za svaku pretrazenu rec
     searchResult = Set()      # lista konacnih rezultata pretrage (linkova)
     trieTree = None
+    graph = None
     edges = []
     words = {}
     opt = -1
@@ -99,7 +100,7 @@ def main():
                 print("Prvo izvrsiti pretragu!\n")
                 continue
 
-            if 'Nema rezultata' in searchInfo[0].keys():
+            if searchResult.elems[0] == 'Nema rezultata':
                 print("Nema rezultata.")
                 continue
 

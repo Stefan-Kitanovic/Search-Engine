@@ -36,13 +36,14 @@ def pageRank(graph, pagesToRank, wordCountDict):
 
     for page in rankedResults.keys():
         for key in graph.vertices():
-            for link in graph.graph[key]:
+            for link in graph.graph[key]:                   # Za puno ugnjezdenih forova je rekla da je greska
                 if page == link:
                     for elem in wordCountDict:
                         rankedResults[page] += elem.get(key, 0.5) * rankedPages[key]
 
     for page in rankedResults.keys():
-        rankedResults[page] += rankedPages[page]
+        if page != "Nema rezultata":
+            rankedResults[page] += rankedPages[page]
 
     sortedList = list(rankedResults.keys())
 

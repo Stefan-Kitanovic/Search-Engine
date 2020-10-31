@@ -1,9 +1,6 @@
 class Graph:
-    def __init__(self, graph=None):
-        if graph == None:
-            graph = {}
-
-        self.graph = graph
+    def __init__(self, graph={}):
+         self.graph = graph
 
     def vertices(self):
         return list(self.graph.keys())
